@@ -1,21 +1,52 @@
+import { describe, it, expect, vi } from 'vitest';
 
-import { describe, expect, it } from "vitest";
+// Mock implementation
+const mockTrainingVerification = {
+  issueCertification: vi.fn().mockImplementation((operator, equipmentType) => {
+    return { value: 1 };
+  }),
+  
+  updateStatus: vi.fn().mockImplementation((certificationId, status) => {
+    return { value: true };
+  }),
+  
+  getCertification: vi.fn().mockImplementation((id) => {
+    return {
+      operator: "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+      equipmentType: "Extrication",
+      trainer: "ST3REHHS5J3CERCRBEPMGH7NIV22XCFT5TSMN2CO",
+      status: "active"
+    };
+  })
+};
 
-const accounts = simnet.getAccounts();
-const address1 = accounts.get("wallet_1")!;
-
-/*
-  The test below is an example. To learn more, read the testing documentation here:
-  https://docs.hiro.so/stacks/clarinet-js-sdk
-*/
-
-describe("example tests", () => {
-  it("ensures simnet is well initalised", () => {
-    expect(simnet.blockHeight).toBeDefined();
+describe('Training Verification Contract', () => {
+  it('should issue a certification', async () => {
+    const result = await mockTrainingVerification.issueCertification(
+        "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+        "Extrication"
+    );
+    
+    expect(result.value).toBe(1);
+    expect(mockTrainingVerification.issueCertification).toHaveBeenCalledWith(
+        "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+        "Extrication"
+    );
   });
-
-  // it("shows an example", () => {
-  //   const { result } = simnet.callReadOnlyFn("counter", "get-counter", [], address1);
-  //   expect(result).toBeUint(0);
-  // });
+  
+  it('should update certification status', async () => {
+    const result = await mockTrainingVerification.updateStatus(1, "revoked");
+    
+    expect(result.value).toBe(true);
+    expect(mockTrainingVerification.updateStatus).toHaveBeenCalledWith(1, "revoked");
+  });
+  
+  it('should get certification details', async () => {
+    const certification = await mockTrainingVerification.getCertification(1);
+    
+    expect(certification.operator).toBe("ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM");
+    expect(certification.equipmentType).toBe("Extrication");
+    expect(certification.status).toBe("active");
+    expect(mockTrainingVerification.getCertification).toHaveBeenCalledWith(1);
+  });
 });

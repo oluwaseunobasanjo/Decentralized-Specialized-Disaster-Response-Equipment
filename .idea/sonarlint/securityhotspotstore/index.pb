@@ -13,3 +13,7 @@ U
 %contracts/maintenance-scheduling.clar,f/7/f75564e007197f104115c4551443027923af5a64
 T
 $tests/maintenance-scheduling.test.ts,a/d/adeaaa7ee161d125c6a79c3d78c40688f3a402a4
+T
+$contracts/training-verification.clar,7/f/7fa57a873c97c4a7f4768f5bbf326e13f4c75183
+S
+#tests/training-verification.test.ts,7/0/702bbf53df2870bceca497b9cdc6239a5d31de0a
