@@ -9,3 +9,7 @@ U
 %contracts/equipment-registration.clar,0/0/00b513eda51a0d2d30272217fe81c0794fe41ca1
 T
 $tests/equipment-registration.test.ts,d/7/d7633dc7fbb756f51ee5cf3320302eb23da04f7f
+U
+%contracts/maintenance-scheduling.clar,f/7/f75564e007197f104115c4551443027923af5a64
+T
+$tests/maintenance-scheduling.test.ts,a/d/adeaaa7ee161d125c6a79c3d78c40688f3a402a4

@@ -1,30 +1,60 @@
+;; Maintenance Scheduling Contract
+;; Manages regular testing and upkeep
 
-;; title: maintenance-scheduling
-;; version:
-;; summary:
-;; description:
+(define-data-var last-id uint u0)
 
-;; traits
-;;
+(define-map maintenance
+  { id: uint }
+  {
+    equipment-id: uint,
+    technician: principal,
+    status: (string-ascii 20)
+  }
+)
 
-;; token definitions
-;;
+;; Schedule maintenance
+(define-public (schedule
+    (equipment-id uint)
+  )
+  (let
+    (
+      (new-id (+ (var-get last-id) u1))
+    )
+    (var-set last-id new-id)
 
-;; constants
-;;
+    (map-set maintenance
+      { id: new-id }
+      {
+        equipment-id: equipment-id,
+        technician: tx-sender,
+        status: "scheduled"
+      }
+    )
 
-;; data vars
-;;
+    (ok new-id)
+  )
+)
 
-;; data maps
-;;
+;; Complete maintenance
+(define-public (complete
+    (maintenance-id uint)
+  )
+  (let
+    (
+      (maintenance-record (unwrap! (map-get? maintenance { id: maintenance-id }) (err u404)))
+    )
+    (asserts! (is-eq tx-sender (get technician maintenance-record)) (err u403))
 
-;; public functions
-;;
+    (map-set maintenance
+      { id: maintenance-id }
+      (merge maintenance-record { status: "completed" })
+    )
 
-;; read only functions
-;;
+    (ok true)
+  )
+)
 
-;; private functions
-;;
-
+;; Get maintenance record
+(define-read-only (get-maintenance (id uint))
+  (map-get? maintenance { id: id })
+)
